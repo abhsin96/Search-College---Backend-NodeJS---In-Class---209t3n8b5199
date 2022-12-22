@@ -50,7 +50,7 @@ app.get("/findColleges", async (req, res) => {
       const result = await connection.find(query);
       res.status(200).json({ result });
     } else {
-      throw new Error("intentional error");
+      //   throw new Error("intentional error");
       res.status(400).json({ error: "Invalid Payload" });
     }
   } catch (error) {
