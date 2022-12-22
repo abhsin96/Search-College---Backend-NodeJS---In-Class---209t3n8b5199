@@ -28,31 +28,37 @@ app.get("/findColleges", async (req, res) => {
   //   console.log(name, state, city, minPackage, maxFees, course, exams);
   console.log(req.body);
   try {
-    if (+maxFees > 0 && +minPackage > 0) {
-      const query = {};
+    const query = {};
 
-      if (name) {
-        query["name"] = { $regex: name };
-      }
-      if (state) {
-        query["state"] = { $regex: state };
-      }
-      if (city) {
-        query["city"] = { $regex: city };
-      }
-      if (course) {
-        query["course"] = { $regex: course };
-      }
-
-      query["minPackage"] = { $gte: +minPackage };
-      query["maxFees"] = { $gte: +maxFees };
-
-      const result = await connection.find(query);
-      res.status(200).json({ result });
-    } else {
-      //   throw new Error("intentional error");
-      res.status(400).json({ error: "Invalid Payload" });
+    if (name) {
+      query["name"] = { $regex: name };
     }
+    if (state) {
+      query["state"] = { $regex: state };
+    }
+    if (city) {
+      query["city"] = { $regex: city };
+    }
+    if (course) {
+      query["course"] = { $regex: course };
+    }
+
+    if (minPackage) {
+      if (+minPackage > 0) {
+        query["minPackage"] = { $gte: +minPackage };
+      } else {
+        res.status(400).json({ error: "Invalid Payload" });
+      }
+    }
+    if (maxFees) {
+      if (+maxFees > 0) {
+        query["maxFees"] = { $gte: +maxFees };
+      } else {
+        res.status(400).json({ error: "Invalid Payload" });
+      }
+    }
+    const result = await connection.find(query);
+    res.status(200).json({ result });
   } catch (error) {
     res.status(500).json({ status: false, error: "internal server error" });
   }
