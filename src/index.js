@@ -52,7 +52,7 @@ app.get("/findcolleges", async (req, res) => {
     }
     if (maxFees) {
       if (+maxFees > 0) {
-        query["maxFees"] = { $gte: +maxFees };
+        query["maxFees"] = { $lte: +maxFees };
       } else {
         res.status(400).json({ error: "Invalid Payload" });
       }
