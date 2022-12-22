@@ -58,6 +58,10 @@ app.get("/findColleges", async (req, res) => {
   }
 });
 
+app.get("*", async (req, res) => {
+  res.status(404).json({ message: "Invalid Route" });
+});
+
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
 module.exports = app;
